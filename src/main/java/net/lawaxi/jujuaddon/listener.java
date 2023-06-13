@@ -35,6 +35,19 @@ public class listener extends SimpleListenerHost {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else if (message.startsWith("聚聚关注")) {
+                Long[] subs = ShitBoyJuJuAddon.INSTANCE.getSubs();
+                String out = "本群聚聚关注：\n";
+                for (int i = 0; i < subs.length; i++) {
+                    String nickName = "null";
+                    try {
+                        nickName = ShitBoyJuJuAddon.handler.getUserInfo(subs[i]).getStr("nickname");
+                    } catch (Exception e) {
+
+                    }
+                    out += (i + 1) + "." + nickName + "(" + subs[i] + ")\n";
+                }
+                group.sendMessage(out);
             }
         }
 
