@@ -13,8 +13,8 @@ public class roomids {
     private static final String api1 = "https://api.github.com/repos/duan602728596/qqtools/commits";
     private static final String api2 = "https://github.com/duan602728596/qqtools/blob/%s/packages/NIMTest/node/roomId.json";
 
-    private static String getApi2() {
-        return ShitBoyJuJuAddon.config.proxy ? "https://ghproxy.com/" + api2 : api2;
+    private static String getApi2(String commit) {
+        return String.format(ShitBoyJuJuAddon.config.proxy ? "https://ghproxy.com/" + api2 : api2, commit);
     }
 
     public final File dataFile;
@@ -30,6 +30,10 @@ public class roomids {
     }
 
     public void download() {
+        if (!dataFile.exists()) {
+            FileUtil.touch(dataFile);
+        }
+
         try {
             String sha = null;
             while (sha == null) {
@@ -39,7 +43,7 @@ public class roomids {
                 }
             }
 
-            HttpUtil.downloadFile(getApi2(), dataFile);
+            HttpUtil.downloadFile(getApi2(sha), dataFile);
         } catch (Exception e) {
             e.printStackTrace();
             ShitBoyJuJuAddon.INSTANCE.getLogger().info("下载成员房间列表错误");
