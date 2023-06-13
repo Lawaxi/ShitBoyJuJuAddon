@@ -23,7 +23,7 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
     public static SJAHandler handler;
 
     private ShitBoyJuJuAddon() {
-        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.0")
+        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.0-test2")
                 .name("ShitBoyJuJuAddon")
                 .author("delay0delay")
                 .dependsOn("net.lawaxi.shitboy", false)
@@ -73,7 +73,7 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
                 return true;
             }
         }
-        getLogger().warning("请安装0.1.7-test15以上版本的Shitboy插件再使用本Addon");
+        getLogger().warning("请安装0.1.7-test16以上版本的Shitboy插件再使用本Addon");
         return false;
     }
 

@@ -19,7 +19,7 @@ public class listener extends SimpleListenerHost {
                 try {
                     long id = Long.valueOf(message.substring(message.indexOf(" ") + 1));
                     config.subscribe(id);
-                    String nickName = ShitBoyJuJuAddon.handler.getUserInfo(id).getStr("nickname");
+                    String nickName = ShitBoyJuJuAddon.INSTANCE_SHITBOY.getHandlerPocket48().getUserNickName(id);
                     group.sendMessage("新增聚聚关注：" + nickName + "(" + id + ")");
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -39,13 +39,7 @@ public class listener extends SimpleListenerHost {
                 Long[] subs = ShitBoyJuJuAddon.INSTANCE.getSubs();
                 String out = "本群聚聚关注：\n";
                 for (int i = 0; i < subs.length; i++) {
-                    String nickName = "null";
-                    try {
-                        nickName = ShitBoyJuJuAddon.handler.getUserInfo(subs[i]).getStr("nickname");
-                    } catch (Exception e) {
-
-                    }
-                    out += (i + 1) + "." + nickName + "(" + subs[i] + ")\n";
+                    out += (i + 1) + "." + ShitBoyJuJuAddon.INSTANCE_SHITBOY.getHandlerPocket48().getUserNickName(subs[i]) + "(" + subs[i] + ")\n";
                 }
                 group.sendMessage(out);
             }
