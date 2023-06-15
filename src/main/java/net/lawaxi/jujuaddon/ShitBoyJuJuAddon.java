@@ -23,7 +23,7 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
     public static SJAHandler handler;
 
     private ShitBoyJuJuAddon() {
-        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.0-test2")
+        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.0-test3")
                 .name("ShitBoyJuJuAddon")
                 .author("delay0delay")
                 .dependsOn("net.lawaxi.shitboy", false)
@@ -56,13 +56,15 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
         for (int i = 0; i < endTime.length; i++) {
             endTime[i] = now;
         }
-        CronUtil.schedule("0 10-23,0-2 * * *", new Runnable() { //每一小时
+        CronUtil.schedule("0 0 0-2,10-23 * * ?", new Runnable() { //每一小时
                     @Override
                     public void run() {
-                        new SJASender(bot, config.groupId, handler, roomIds, endTime);
+                        getLogger().info("on search");
+                        new SJASender(bot, config.groupId, handler, roomIds, endTime).run();
                     }
                 }
         );
+        CronUtil.start();
     }
 
     private boolean loadShitboy() {

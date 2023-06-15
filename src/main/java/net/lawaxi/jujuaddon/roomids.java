@@ -6,6 +6,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,18 +25,21 @@ public class roomids {
     public roomids(File file) {
         this.dataFile = file;
         if (!file.exists()) {
-            download();
+            if (!this.download())
+                roomIds = new long[0];
         }
-        init();
+
+        this.init();
     }
 
-    public void download() {
-        if (!dataFile.exists()) {
-            FileUtil.touch(dataFile);
+    public boolean download() {
+        if (!this.dataFile.exists()) {
+            FileUtil.touch(this.dataFile);
         }
 
         try {
             String sha = null;
+
             while (sha == null) {
                 String r = HttpUtil.get(api1);
                 if (r != null) {
@@ -43,30 +47,42 @@ public class roomids {
                 }
             }
 
-            HttpUtil.downloadFile(getApi2(sha), dataFile);
-        } catch (Exception e) {
-            e.printStackTrace();
+            HttpUtil.downloadFile(getApi2(sha), this.dataFile);
+            ShitBoyJuJuAddon.INSTANCE.getLogger().info("下载成员房间列表成功");
+            return true;
+        } catch (Exception var3) {
+            var3.printStackTrace();
             ShitBoyJuJuAddon.INSTANCE.getLogger().info("下载成员房间列表错误");
+            return false;
         }
+
     }
 
     public void init() {
         try {
-            JSONObject a = JSONUtil.parseObj(FileUtil.readUtf8String(dataFile));
+            JSONObject a = JSONUtil.readJSONObject(this.dataFile, Charset.defaultCharset());
             Object[] b = a.getJSONArray("roomId").toArray();
-            List ids = new ArrayList<>();
-            for (Object b0 : b) {
-                JSONObject room = JSONUtil.parseObj(b0);
-                if (room.containsKey("roomId"))
-                    ids.add(Long.valueOf(room.getStr("roomId")));
+            List ids = new ArrayList();
+            Object[] var4 = b;
+            int var5 = b.length;
 
+            for (int var6 = 0; var6 < var5; ++var6) {
+                Object b0 = var4[var6];
+                JSONObject room = JSONUtil.parseObj(b0);
+                if (room.containsKey("channelId")) {
+                    ids.add(room.getLong("channelId"));
+                }
             }
 
-            this.roomIds = ids.stream().mapToLong(t -> ((Long) t).longValue()).toArray();
-        } catch (Exception e) {
-            e.printStackTrace();
+            this.roomIds = ids.stream().mapToLong((t) -> {
+                return (Long) t;
+            }).toArray();
+            ShitBoyJuJuAddon.INSTANCE.getLogger().info("读取本地成员房间列表成功，共" + getRoomAmount() + "个");
+        } catch (Exception var9) {
+            var9.printStackTrace();
             ShitBoyJuJuAddon.INSTANCE.getLogger().info("读取本地成员房间列表错误");
         }
+
     }
 
     public long[] getRoomIds() {

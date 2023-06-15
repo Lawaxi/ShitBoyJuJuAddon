@@ -32,10 +32,17 @@ public class SJASender extends net.lawaxi.util.sender.Sender {
     public void run() {
         List<Pocket48Message> m = new ArrayList<>();
         for (int i = 0; i < roomIds.length; i++) {
+            try {
+                sleep(1001);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             Pocket48RoomInfo roomInfo = handler.getRoomInfoByChannelID(roomIds[i]);
             if (roomInfo != null) {
+                int count = 0;
                 for (SJAMessage message : handler.getMessages(roomInfo, endTime, i)) {
-                    if (fit(message.getUserId())) {
+                    count++;
+                    if (match(message.getUserId())) {
                         m.add(message);
                     }
                 }
@@ -48,8 +55,9 @@ public class SJASender extends net.lawaxi.util.sender.Sender {
                 Message m0 = pharseMessage(message);
                 if (m0 == null)
                     ShitBoyJuJuAddon.INSTANCE.getLogger().warning("解析" + message.getOwnerName() + "房间发言错误");
-                else
+                else {
                     group.sendMessage(m0);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -75,7 +83,7 @@ public class SJASender extends net.lawaxi.util.sender.Sender {
 
     }
 
-    private boolean fit(long userId) {
+    private boolean match(long userId) {
         for (Long a : ShitBoyJuJuAddon.INSTANCE.getSubs()) {
             if (a != null) {
                 if (userId == a.longValue())

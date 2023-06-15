@@ -3,7 +3,6 @@ package net.lawaxi.jujuaddon.u;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import net.lawaxi.Shitboy;
 import net.lawaxi.handler.Pocket48Handler;
 import net.lawaxi.jujuaddon.ShitBoyJuJuAddon;
 import net.lawaxi.model.Pocket48MessageType;
@@ -61,7 +60,8 @@ public class SJAHandler extends Pocket48Handler {
                 }
             }
 
-            endTime[i] = latest;
+            if (latest != null)
+                endTime[i] = latest;
             return rs.toArray(new SJAMessage[0]);
         }
     }

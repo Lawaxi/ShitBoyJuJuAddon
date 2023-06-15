@@ -21,6 +21,6 @@ public class SJAMessage extends Pocket48Message {
     }
 
     public long getUserId() {
-        return userId;
+        return this.userId;
     }
 }
