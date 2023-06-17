@@ -76,7 +76,7 @@ public class SJASender extends net.lawaxi.util.sender.Sender {
                 return new PlainText(name).plus(this.pharsePocketTextWithFace(message.getText()));
             case REPLY:
             case GIFTREPLY:
-                return new PlainText(name + message.getReply().getNameTo() + "：").plus(this.pharsePocketTextWithFace(message.getReply().getMsgTo())).plus("\n-----").plus(this.pharsePocketTextWithFace(message.getReply().getMsgFrom()));
+                return new PlainText(name + message.getReply().getNameTo() + "：").plus(this.pharsePocketTextWithFace(message.getReply().getMsgTo())).plus("\n-----\n").plus(this.pharsePocketTextWithFace(message.getReply().getMsgFrom()));
             default:
                 return null;
         }
