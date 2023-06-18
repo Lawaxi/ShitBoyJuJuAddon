@@ -6,6 +6,7 @@ import cn.hutool.setting.Setting;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class config {
 
     private final Setting setting;
     public boolean proxy;
+    public String schedule;
     public long groupId;
     public List<String> subscribes;
 
@@ -21,6 +23,7 @@ public class config {
             FileUtil.touch(file);
             Setting setting = new Setting(file, StandardCharsets.UTF_8, false);
             setting.set("proxy", "true");
+            setting.set("schedule", "0 0 0-2,10-23 * * ?");
             setting.set("group", "817151561");
             setting.set("subscribes", "");
             setting.store();
@@ -31,9 +34,11 @@ public class config {
     }
 
     private void init() {
-        proxy = this.setting.getBool("proxy");
+        proxy = this.setting.getBool("proxy", true);
+        schedule = this.setting.getStr("schedule", "0 0 0-2,10-23 * * ?");
         groupId = this.setting.getLong("group");
-        subscribes = Arrays.asList(this.setting.getStrings("subscribes"));
+        String[] subs = this.setting.getStrings("subscribes");
+        subscribes = subs == null ? new ArrayList<>() : Arrays.asList(subs);
     }
 
     public void subscribe(long id) {
