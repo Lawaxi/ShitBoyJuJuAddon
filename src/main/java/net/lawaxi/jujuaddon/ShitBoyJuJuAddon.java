@@ -23,7 +23,7 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
     public static SJAHandler handler;
 
     private ShitBoyJuJuAddon() {
-        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.2")
+        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.2-test2")
                 .name("ShitBoyJuJuAddon")
                 .author("delay0delay")
                 .dependsOn("net.lawaxi.shitboy", false)

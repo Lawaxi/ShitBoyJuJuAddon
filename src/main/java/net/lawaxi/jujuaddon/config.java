@@ -38,7 +38,7 @@ public class config {
         schedule = this.setting.getStr("schedule", "0 0 0-2,10-23 * * ?");
         groupId = this.setting.getLong("group");
         String[] subs = this.setting.getStrings("subscribes");
-        subscribes = subs == null ? new ArrayList<>() : Arrays.asList(subs);
+        subscribes = subs == null ? new ArrayList<>() : new ArrayList(Arrays.asList(subs));
     }
 
     public void subscribe(long id) {
