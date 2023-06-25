@@ -43,14 +43,14 @@ public class config {
 
     public void subscribe(long id) {
         subscribes.add(String.valueOf(id));
-        this.setting.set("subscribes", ArrayUtil.join(subscribes, ","));
+        this.setting.set("subscribes", ArrayUtil.join(subscribes.toArray(new String[0]), ","));
         this.setting.store();
     }
 
     public boolean unsubscribe(long id) {
         if (subscribes.contains(String.valueOf(id))) {
             subscribes.remove(String.valueOf(id));
-            this.setting.set("subscribes", ArrayUtil.join(subscribes, ","));
+            this.setting.set("subscribes", ArrayUtil.join(subscribes.toArray(new String[0]), ","));
             this.setting.store();
             return true;
         } else {
