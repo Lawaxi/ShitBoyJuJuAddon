@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class roomids {
-    private static final String api1 = "https://api.github.com/repos/duan602728596/qqtools/commits";
-    private static final String api2 = "https://github.com/duan602728596/qqtools/blob/%s/packages/NIMTest/node/roomId.json";
+    private static final String api2 = "https://raw.githubusercontent.com/duan602728596/qqtools/main/packages/NIMTest/node/roomId.json";
 
-    private static String getApi2(String commit) {
-        return String.format(ShitBoyJuJuAddon.config.proxy ? "https://ghproxy.com/" + api2 : api2, commit);
+    private static String getApi() {
+        return ShitBoyJuJuAddon.config.proxy ? "https://ghproxy.com/" + api2 : api2;
     }
 
     public final File dataFile;
@@ -38,16 +37,7 @@ public class roomids {
         }
 
         try {
-            String sha = null;
-
-            while (sha == null) {
-                String r = HttpUtil.get(api1);
-                if (r != null) {
-                    sha = JSONUtil.parseObj(JSONUtil.parseArray(r).get(0)).getStr("sha");
-                }
-            }
-
-            HttpUtil.downloadFile(getApi2(sha), this.dataFile);
+            HttpUtil.downloadFile(getApi(), this.dataFile);
             ShitBoyJuJuAddon.INSTANCE.getLogger().info("下载成员房间列表成功");
             return true;
         } catch (Exception var3) {
