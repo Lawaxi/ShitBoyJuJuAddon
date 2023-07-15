@@ -15,6 +15,6 @@ repositories {
 }
 
 dependencies {
-    implementation ("cn.hutool:hutool-all:5.8.18")
-    implementation(files("libs/shitboy-0.1.7-test17.mirai2.jar"))
+    api ("cn.hutool:hutool-all:5.8.18")
+    api(files("libs/shitboy-0.1.7-test17.mirai2.jar"))
 }
