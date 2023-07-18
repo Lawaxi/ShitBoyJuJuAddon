@@ -1,7 +1,5 @@
 package net.lawaxi.jujuaddon.u;
 
-import net.lawaxi.Shitboy;
-import net.lawaxi.handler.Pocket48Handler;
 import net.lawaxi.jujuaddon.ShitBoyJuJuAddon;
 import net.lawaxi.model.Pocket48Message;
 import net.lawaxi.model.Pocket48RoomInfo;
@@ -20,53 +18,52 @@ public class SJASender extends net.lawaxi.util.sender.Sender {
     private final SJAHandler handler;
     private final long[] roomIds;
     private final long[] endTime;
+    private List<Pocket48Message> m;
 
-    public SJASender(Bot bot, long group, SJAHandler handler, long[] roomIds, long[] endTime) {
+    public SJASender(Bot bot, long group, SJAHandler handler, long[] roomIds, long[] endTime, List<Pocket48Message> m) {
         super(bot, group);
         this.handler = handler;
         this.roomIds = roomIds;
         this.endTime = endTime;
+        this.m = m;
     }
 
     @Override
     public void run() {
-        List<Pocket48Message> m = new ArrayList<>();
-        for (int i = 0; i < roomIds.length; i++) {
-            try {
-                sleep(1001);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            Pocket48RoomInfo roomInfo = handler.getRoomInfoByChannelID(roomIds[i]);
-            if (roomInfo != null) {
-                int count = 0;
-                for (SJAMessage message : handler.getMessages(roomInfo, endTime, i)) {
-                    count++;
-                    if (match(message.getUserId())) {
-                        m.add(message);
+        if (m == null) {
+            m = new ArrayList<>();
+            for (int i = 0; i < roomIds.length; i++) {
+                try {
+                    sleep(1001);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                Pocket48RoomInfo roomInfo = handler.getRoomInfoByChannelID(roomIds[i]);
+                if (roomInfo != null) {
+                    for (SJAMessage message : handler.getMessages(roomInfo, endTime, i)) {
+                        if (match(message.getUserId())) {
+                            m.add(message);
+                        }
                     }
                 }
             }
-        }
 
-        m.sort((a, b) -> a.getTime() - b.getTime() > 0 ? 1 : -1);
+            m.sort((a, b) -> a.getTime() - b.getTime() > 0 ? 1 : -1);
+        }
         for (Pocket48Message message : m) {
             try {
                 Message m0 = pharseMessage(message);
-                if (m0 == null)
-                    ShitBoyJuJuAddon.INSTANCE.getLogger().warning("解析" + message.getOwnerName() + "房间发言错误");
-                else {
+                if (m0 != null) {
                     group.sendMessage(m0);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                ShitBoyJuJuAddon.INSTANCE.getLogger().warning("解析" + message.getOwnerName() + "房间发言错误");
             }
         }
     }
 
     public Message pharseMessage(final Pocket48Message message) throws IOException {
-
-        Pocket48Handler pocket = Shitboy.INSTANCE.getHandlerPocket48();
         String n = message.getNickName();
         String r = message.getRoom() + "(" + message.getOwnerName() + ")";
         String name = "【" + n + "@" + r + "】\n";

@@ -5,15 +5,16 @@ import cn.hutool.cron.CronUtil;
 import net.lawaxi.Shitboy;
 import net.lawaxi.jujuaddon.u.SJAHandler;
 import net.lawaxi.jujuaddon.u.SJASender;
+import net.lawaxi.model.Pocket48Message;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.plugin.Plugin;
 import net.mamoe.mirai.console.plugin.PluginManager;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.GlobalEventChannel;
-import net.mamoe.mirai.event.events.BotOnlineEvent;
 
 import java.util.Date;
+import java.util.List;
 
 public final class ShitBoyJuJuAddon extends JavaPlugin {
     public static final ShitBoyJuJuAddon INSTANCE = new ShitBoyJuJuAddon();
@@ -23,7 +24,7 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
     public static SJAHandler handler;
 
     private ShitBoyJuJuAddon() {
-        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.2-test4")
+        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.2-test5")
                 .name("ShitBoyJuJuAddon")
                 .author("delay0delay")
                 .dependsOn("net.lawaxi.shitboy", false)
@@ -41,15 +42,13 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
                 return;
             }
             handler = new SJAHandler(INSTANCE_SHITBOY.getHandlerPocket48());
+            listenBroadcast();
             GlobalEventChannel.INSTANCE.registerListenerHost(new listener());
-            GlobalEventChannel.INSTANCE.parentScope(INSTANCE).subscribeOnce(BotOnlineEvent.class, event -> {
-                listenBroadcast(event.getBot());
-            });
         }
     }
 
 
-    private void listenBroadcast(Bot bot) {
+    private void listenBroadcast() {
         long[] roomIds = data.getRoomIds();
         long[] endTime = new long[roomIds.length];
         final long now = new Date().getTime();
@@ -59,8 +58,11 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
         CronUtil.schedule(config.schedule, new Runnable() { //每一小时
                     @Override
                     public void run() {
-                        getLogger().info("on search");
-                        new SJASender(bot, config.groupId, handler, roomIds, endTime).run();
+                        List<Pocket48Message> m = null;
+                        for (Bot b : Bot.getInstances()) {
+                            getLogger().info("on search");
+                            new SJASender(b, config.groupId, handler, roomIds, endTime, m).run();
+                        }
                     }
                 }
         );
