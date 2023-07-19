@@ -2,6 +2,7 @@ package net.lawaxi.jujuaddon;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.cron.CronUtil;
+import cn.hutool.cron.Scheduler;
 import net.lawaxi.Shitboy;
 import net.lawaxi.jujuaddon.u.SJAHandler;
 import net.lawaxi.jujuaddon.u.SJASender;
@@ -24,7 +25,7 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
     public static SJAHandler handler;
 
     private ShitBoyJuJuAddon() {
-        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.2-test5")
+        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.2-test6")
                 .name("ShitBoyJuJuAddon")
                 .author("delay0delay")
                 .dependsOn("net.lawaxi.shitboy", false)
@@ -55,7 +56,8 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
         for (int i = 0; i < endTime.length; i++) {
             endTime[i] = now;
         }
-        CronUtil.schedule(config.schedule, new Runnable() { //每一小时
+        Scheduler jja = new Scheduler();
+        jja.schedule(config.schedule, new Runnable() { //每一小时
                     @Override
                     public void run() {
                         List<Pocket48Message> m = null;
@@ -66,7 +68,7 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
                     }
                 }
         );
-        CronUtil.start();
+        jja.start();
     }
 
     private boolean loadShitboy() {

@@ -7,3 +7,4 @@ Mirai-Console插件，依赖[Lawaxi/Shitboy](https://github.com/Lawaxi/ShitBoy)�
 ### 0.1.2
 
 - test4 支持Shitboy-0.1.10
+- test6 BUG修复

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.lawaxi.jujuaddon"
-version = "0.1.2-test5"
+version = "0.1.2-test6"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public")
