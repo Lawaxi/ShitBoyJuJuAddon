@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.lawaxi.jujuaddon"
-version = "0.1.2-test6"
+version = "0.1.2-test7"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public")
@@ -16,5 +16,5 @@ repositories {
 
 dependencies {
     api ("cn.hutool:hutool-all:5.8.18")
-    api(files("libs/shitboy-0.1.7-test17.mirai2.jar"))
+    api(files("libs/shitboy-0.1.11-dev5.mirai2.jar"))
 }

@@ -12,13 +12,7 @@ import java.util.List;
 
 public class roomids {
     private static final String api2 = "https://raw.githubusercontent.com/duan602728596/qqtools/main/packages/NIMTest/node/roomId.json";
-
-    private static String getApi() {
-        return ShitBoyJuJuAddon.config.proxy ? "https://ghproxy.com/" + api2 : api2;
-    }
-
     public final File dataFile;
-
     private long[] roomIds;
 
     public roomids(File file) {
@@ -29,6 +23,10 @@ public class roomids {
         }
 
         this.init();
+    }
+
+    private static String getApi() {
+        return ShitBoyJuJuAddon.config.proxy ? "https://ghproxy.com/" + api2 : api2;
     }
 
     public boolean download() {

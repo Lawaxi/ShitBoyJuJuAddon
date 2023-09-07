@@ -13,8 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SJAHandler extends Pocket48Handler {
-    private final Pocket48Handler pocket;
     private static final String APIMsgAll = "https://pocketapi.48.cn/im/api/v1/team/message/list/all";
+    private final Pocket48Handler pocket;
 
     public SJAHandler(Pocket48Handler pocket) {
         this.pocket = pocket;
@@ -28,7 +28,7 @@ public class SJAHandler extends Pocket48Handler {
     public SJAMessage[] getMessages(Pocket48RoomInfo roomInfo, long[] endTime, int i) {
         long roomID = roomInfo.getRoomId();
         String roomName = roomInfo.getRoomName();
-        String ownerName = this.getOwnerOrTeamName(roomInfo);
+        String ownerName = getOwnerOrTeamName(roomInfo);
         List<Object> msgs = this.getOriMessages(roomID, roomInfo.getSeverId());
         if (msgs == null) {
             return new SJAMessage[0];

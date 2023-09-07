@@ -1,7 +1,6 @@
 package net.lawaxi.jujuaddon;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.cron.CronUtil;
 import cn.hutool.cron.Scheduler;
 import net.lawaxi.Shitboy;
 import net.lawaxi.jujuaddon.u.SJAHandler;
@@ -25,7 +24,7 @@ public final class ShitBoyJuJuAddon extends JavaPlugin {
     public static SJAHandler handler;
 
     private ShitBoyJuJuAddon() {
-        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.2-test6")
+        super(new JvmPluginDescriptionBuilder("net.lawaxi.shitboyjja", "0.1.2-test7")
                 .name("ShitBoyJuJuAddon")
                 .author("delay0delay")
                 .dependsOn("net.lawaxi.shitboy", false)

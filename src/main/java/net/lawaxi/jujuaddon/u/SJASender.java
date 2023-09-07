@@ -65,7 +65,10 @@ public class SJASender extends net.lawaxi.util.sender.Sender {
 
     public Message pharseMessage(final Pocket48Message message) throws IOException {
         String n = message.getNickName();
-        String r = message.getRoom() + "(" + message.getOwnerName() + ")";
+        if (!(message instanceof SJAMessage))
+            return null;
+
+        String r = ((SJAMessage) message).getRoomName() + "(" + message.getOwnerName() + ")";
         String name = "【" + n + "@" + r + "】\n";
         switch (message.getType()) {
             case TEXT:
